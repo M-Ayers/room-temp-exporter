@@ -5,8 +5,7 @@
 const test = require('ava');
 
 const convert = require('../../lib/convert');
-const dataFile = require('../resources/sample.json');
 
 test('convert()', (t) => {
-  t.is(convert(30), 86)
+  t.is(convert(30), 86);
 });

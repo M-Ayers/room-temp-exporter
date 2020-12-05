@@ -13,7 +13,13 @@ test('probe.parseUid()', (t) => {
 
 test('probe.getSensors()', (t) => {
   t.deepEqual(probe.getSensors(dataFile), {
-    'Room Sensor 1': {lightlevel: 0, temp: '74.68'},
-    'Room Sensor 2': {lightlevel: 50, temp: '77.27'},
+    'Room Sensor 1': {
+      lightlevel: 0,
+      temp: '74.68'
+    },
+    'Room Sensor 2': {
+      lightlevel: 50,
+      temp: '77.27'
+    },
   });
 });

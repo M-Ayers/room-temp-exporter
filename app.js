@@ -4,7 +4,7 @@ const promClient = require('prom-client');
 const schedule = require('node-schedule');
 
 const logger = require('./lib/logger');
-const metrics = require('./lib/metrics');
+const featureToggle = require('./lib/feature-toggle');
 const publish = require('./lib/publish');
 const probe = require('./lib/probe');
 const { port } = require('./config/config');
@@ -16,14 +16,16 @@ const PORT = port || 3030;
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-  res.redirect('/metrics');
-});
+if (featureToggle.enabled('prom')) {
+  app.get('/', (req, res) => {
+    res.redirect('/metrics');
+  });
 
-app.get('/metrics', (req, res) => {
-  res.set('Content-Type', promClient.contentType);
-  res.end(promClient.register.metrics());
-});
+  app.get('/metrics', (req, res) => {
+    res.set('Content-Type', promClient.contentType);
+    res.end(promClient.register.metrics());
+  });
+}
 
 app.listen(PORT, () => {
   logger.info(`[STARTUP] Exporter is listening on ${PORT} at /metrics`);
